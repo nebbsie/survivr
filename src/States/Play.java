@@ -66,14 +66,17 @@ public class Play extends BasicGameState {
             shapeList.add(new Rectangle(rand.nextInt(Survivr.V_WIDTH), rand.nextInt(Survivr.V_HEIGHT), 50, 50));
         }
 
-        shapeList.add(new Circle(100, 200, 50));
-
         // populate points list with points of all shapes
         for(int i = 0; i < shapeList.size(); i++) {
             for (int j = 0; j < shapeList.get(i).getPointCount(); j++) {
                 pointList.add(new Point(shapeList.get(i).getPoint(j)[0], shapeList.get(i).getPoint(j)[1]));
             }
         }
+
+        pointList.add(new Point(back.getX(), back.getY()));
+        pointList.add(new Point(back.getX() + back.getWidth(), back.getY()));
+        pointList.add(new Point(back.getX(), back.getY() + back.getHeight()));
+        pointList.add(new Point(back.getX() + back.getWidth(), back.getY() + back.getHeight()));
 
 		debug = new Debug();
 		input = container.getInput();
