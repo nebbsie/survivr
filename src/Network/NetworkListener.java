@@ -39,7 +39,6 @@ public class NetworkListener extends Listener {
 	@Override
 	public void disconnected(Connection c){
 		System.out.println("[CLIENT] >>  You Have Disconected From Server");
-		
 	}
 	
 	@Override
@@ -54,7 +53,6 @@ public class NetworkListener extends Listener {
 			Survivr.details.clients = p.players;
 			Survivr.details.ping = connection.getReturnTripTime();
 			Survivr.details.address = connection.getRemoteAddressTCP();
-			
 		}
 	}
 
