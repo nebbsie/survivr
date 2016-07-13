@@ -23,7 +23,7 @@ public class Survivr extends StateBasedGame {
 	// Game settings
 	private static boolean FULLSCREEN = false;
 	private static int FPS = 60;
-	private static boolean VSYNC = false;
+	private static boolean VSYNC = true;
 
 	// Game states
 	public static int menu = 0;

@@ -60,4 +60,7 @@ public class Player {
 		dy = 0;
 	}
 
+	public float getX(){return x;}
+	public float getY(){return y;}
+
 }
