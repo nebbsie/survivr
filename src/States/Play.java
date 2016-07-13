@@ -9,6 +9,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -22,6 +23,7 @@ import Network.NetworkClient;
 import Network.NetworkDetails;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Play extends BasicGameState {
 
@@ -42,6 +44,8 @@ public class Play extends BasicGameState {
 	//Entities
 	private Player player;
     private ArrayList<Shape> shapeList = new ArrayList<>();
+    private ArrayList<Point> pointList = new ArrayList<>();
+
 
 	public Play(int state) {
 		this.state = state;
@@ -56,11 +60,17 @@ public class Play extends BasicGameState {
         back = new Rectangle(0, 0, Survivr.V_WIDTH, Survivr.V_HEIGHT);
 
         // create random shapes
-        for(int i = 0; i < 1; i++){
-            shapeList.add(new Rectangle(50, 50, 30, 50));
+        Random rand = new Random();
+        for(int i = 0; i < 5; i++){
+            shapeList.add(new Rectangle(rand.nextInt(Survivr.V_WIDTH), rand.nextInt(Survivr.V_HEIGHT), 50, 50));
         }
 
-        float points[] = shapeList.get(0).getPoints();
+        // populate points list with points of all shapes
+        for(int i = 0; i < shapeList.size(); i++) {
+            for (int j = 0; j < shapeList.get(i).getPointCount(); j++) {
+                pointList.add(new Point(shapeList.get(i).getPoint(j)[0], shapeList.get(i).getPoint(j)[1]));
+            }
+        }
 
 		debug = new Debug();
 		input = container.getInput();
@@ -89,15 +99,19 @@ public class Play extends BasicGameState {
 		player.update(delta);
 	}
 
-    public void lighting(){
-        int sourceX = (int)player.getX();
-        int sourceY = (int)player.getY();
+    public void drawLighting(Graphics g){
+        int sourceX = (int)player.getX() + (int)player.getRadius();
+        int sourceY = (int)player.getY() + (int)player.getRadius();
 
+        for(int i = 0; i < pointList.size(); i++){
+            g.drawLine(sourceX, sourceY, pointList.get(i).getX(), pointList.get(i).getY());
+        }
     }
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		g.fill(back);
+		g.setColor(Color.black);
+        g.fill(back);
 		debug.render();
 		player.render(g);
         for(int i = 0; i < shapeList.size(); i++){
@@ -105,6 +119,7 @@ public class Play extends BasicGameState {
             g.setAntiAlias(true);
             g.fill(shapeList.get(i));
         }
+        drawLighting(g);
 		actionBar.render(g, container);
 	}
 

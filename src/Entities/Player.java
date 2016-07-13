@@ -62,5 +62,6 @@ public class Player {
 
 	public float getX(){return x;}
 	public float getY(){return y;}
+	public float getRadius(){return player.getRadius();}
 
 }
