@@ -9,6 +9,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
@@ -64,6 +65,8 @@ public class Play extends BasicGameState {
         for(int i = 0; i < 5; i++){
             shapeList.add(new Rectangle(rand.nextInt(Survivr.V_WIDTH), rand.nextInt(Survivr.V_HEIGHT), 50, 50));
         }
+
+        shapeList.add(new Circle(100, 200, 50));
 
         // populate points list with points of all shapes
         for(int i = 0; i < shapeList.size(); i++) {
