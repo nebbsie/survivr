@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class Play extends BasicGameState {
 
 	private int state;
+    private Rectangle back;
 
 	// Colours
 	private Color backgroundColour = new Color(126, 178, 255);
@@ -51,6 +52,8 @@ public class Play extends BasicGameState {
 		
 		JFrame frame = new JFrame("Enter Name: ");
 		String name = JOptionPane.showInputDialog(this);
+
+        back = new Rectangle(0, 0, Survivr.V_WIDTH, Survivr.V_HEIGHT);
 
         // create random shapes
         for(int i = 0; i < 1; i++){
@@ -94,7 +97,7 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		g.setBackground(backgroundColour);
+		g.fill(back);
 		debug.render();
 		player.render(g);
         for(int i = 0; i < shapeList.size(); i++){
