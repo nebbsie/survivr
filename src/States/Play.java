@@ -130,7 +130,12 @@ public class Play extends BasicGameState {
 	public void drawNetworkPlayers(Graphics g){
 		if(Survivr.details.players.size() > 0){
 			for(NetworkPlayer p : Survivr.details.players){
-				g.fill(new Circle(p.x, p.y, 20));
+
+				Circle c = new Circle(0, 0, 20);
+
+				c.setLocation(p.x, p.y);
+
+				g.fill(c);
 				g.setColor(Color.yellow);
 				g.drawString(p.username, p.x - 10, p.y-40);
 			}
@@ -140,9 +145,6 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-
-		g.translate(0,0);
-		g.scale(1.0f, 1.0f);
 
 		g.setColor(Color.black);
         g.fill(back);

@@ -58,7 +58,6 @@ public class Player {
 	}
 	
 	public void render(Graphics g){
-		g.translate(0,0);
 		g.setColor(Color.green);
 		g.fill(player);
 	}
