@@ -15,6 +15,7 @@ public class Player {
 	
 	private Circle player;
 	private Input input;
+	private String username;
 	
 	private Vector2f pos;
 	private float x;
@@ -23,16 +24,19 @@ public class Player {
 	private float dy = 0;
 	private float speed = 0.2f;
 	
-	public Player(GameContainer container){
+	public Player(GameContainer container, String username){
 		x = Survivr.V_WIDTH/2-10;
 		y = Survivr.V_HEIGHT/2-10;
 		player = new Circle(x,y,20);
 		input = container.getInput();
+		this.username = username;
 	}
 	
 	public void update(int delta){
+
 		
 		if(input.isKeyDown(Input.KEY_W)){
+
 			dy -= speed;
 		}else if(input.isKeyDown(Input.KEY_S)){
 			dy += speed;
@@ -40,6 +44,7 @@ public class Player {
 		
 		if(input.isKeyDown(Input.KEY_A)){
 			dx -= speed;
+
 		}else if(input.isKeyDown(Input.KEY_D)){
 			dx += speed;
 		}
@@ -53,8 +58,8 @@ public class Player {
 	}
 	
 	public void render(Graphics g){
+		g.translate(0,0);
 		g.setColor(Color.green);
-		g.setAntiAlias(true);
 		g.fill(player);
 	}
 
@@ -77,4 +82,11 @@ public class Player {
 	public float getY(){return y;}
 	public float getRadius(){return player.getRadius();}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }

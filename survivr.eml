@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/out/test/survivr"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="lwjgl.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/jar/lwjgl.jar!/"/>
+	</lib>
+	<lib name="kryonet-2.21-all.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/kryonet-2.21-all.jar!/"/>
+	</lib>
+	<lib name="jogg-0.0.7.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/slick/lib/jogg-0.0.7.jar!/"/>
+	</lib>
+	<lib name="jorbis-0.0.15.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/slick/lib/jorbis-0.0.15.jar!/"/>
+	</lib>
+	<lib name="lwjgl.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/slick/lib/lwjgl.jar!/"/>
+	</lib>
+	<lib name="slick.jar" scope="COMPILE">
+		<srcroot url="file://$MODULE_DIR$/libs/slick/src"/>
+		<relative-module-src project-related="file://$PROJECT_DIR$/libs/slick/src"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/slick/lib/slick.jar!/"/>
+		<relative-module-javadoc project-related="file://$PROJECT_DIR$/libs/slick/javadoc"/>
+	</lib>
+</component>

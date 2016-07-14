@@ -11,6 +11,7 @@ public class Survivr extends StateBasedGame {
 
 	public static AppGameContainer app;
 	public static NetworkDetails details;
+	public static Screen screen;
 
 	// Game parameters
 	private final static String gamename = "Survivr";

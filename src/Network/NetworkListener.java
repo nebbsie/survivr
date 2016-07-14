@@ -57,6 +57,8 @@ public class NetworkListener extends Listener {
 			Survivr.details.ping = connection.getReturnTripTime();
 			Survivr.details.address = connection.getRemoteAddressTCP();
 			Survivr.details.players = p.clients;
+			connection.updateReturnTripTime();
+
 		}
 	}
 

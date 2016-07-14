@@ -3,6 +3,7 @@ package GUI;
 import java.awt.Font;
 import java.net.InetSocketAddress;
 
+import Entities.Player;
 import org.newdawn.slick.TrueTypeFont;
 
 import Game.Survivr;
@@ -16,6 +17,7 @@ public class Debug {
 	private int players;
 	private int ping;
 	private InetSocketAddress address;
+	private Player p;
 
 	private boolean isDebug;
 
@@ -31,10 +33,11 @@ public class Debug {
 		}
 	}
 
-	public void update() {
+	public void update(Player p) {
 		players = Survivr.details.clients;
 		ping = Survivr.details.ping;
 		address = Survivr.details.address;
+		this.p = p;
 	}
 
 	public void render() {
@@ -48,6 +51,8 @@ public class Debug {
 			font.drawString(0, 75, "Server Host: " + address);
 			font.drawString(0, 90, "Server Port: " + "N/A");
 			font.drawString(Survivr.V_WIDTH - 120, 0, "!DEBUG MODE!");
+			font.drawString(0, 105, "X: " + p.getX() + "Y: " + p.getY());
+			font.drawString(0, 120, "Username: " + p.getUsername());
 		}
 
 	}

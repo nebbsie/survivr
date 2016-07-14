@@ -3,12 +3,8 @@ package States;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import Network.NetworkPlayer;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
@@ -22,6 +18,7 @@ import GUI.Debug;
 import Game.Survivr;
 import Network.NetworkClient;
 import Network.NetworkDetails;
+import sun.font.TrueTypeFont;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,6 +27,7 @@ public class Play extends BasicGameState {
 
 	private int state;
     private Rectangle back;
+
 
 	// Colours
 	private Color backgroundColour = new Color(126, 178, 255);
@@ -60,6 +58,8 @@ public class Play extends BasicGameState {
 
         back = new Rectangle(0, 0, Survivr.V_WIDTH, Survivr.V_HEIGHT);
 
+
+
         // create random shapes
         Random rand = new Random();
         for(int i = 0; i < 5; i++){
@@ -81,7 +81,7 @@ public class Play extends BasicGameState {
 		debug = new Debug();
 		input = container.getInput();
 		actionBar = new ActionBar(container);
-		player = new Player(container);
+		player = new Player(container, name);
 		
 		try {
 			server = new NetworkClient(name);
@@ -100,7 +100,7 @@ public class Play extends BasicGameState {
 			game.enterState(Survivr.menu);
 		}
 
-		debug.update();
+		debug.update(player);
 		actionBar.update();
 		player.update(delta);
 	}
@@ -116,15 +116,24 @@ public class Play extends BasicGameState {
 
 	public void drawNetworkPlayers(Graphics g){
 		if(Survivr.details.players.size() > 0){
-			g.fill(new Circle(Survivr.details.players.get(0).x, Survivr.details.players.get(0).y, 40));
+			for(NetworkPlayer p : Survivr.details.players){
+				g.fill(new Circle(p.x, p.y, 20));
+				g.setColor(Color.yellow);
+				g.drawString(p.username, p.x - 10, p.y-40);
+			}
+
 		}
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+
+		g.translate(0,0);
+
 		g.setColor(Color.black);
         g.fill(back);
 		debug.render();
+
 
 		player.render(g);
         for(int i = 0; i < shapeList.size(); i++){
@@ -137,6 +146,7 @@ public class Play extends BasicGameState {
 		g.setColor(Color.red);
 
 		drawNetworkPlayers(g);
+
 
 		actionBar.render(g, container);
 	}

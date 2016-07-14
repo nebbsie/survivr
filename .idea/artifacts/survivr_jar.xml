@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="survivr:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/survivr_jar</output-path>
+    <root id="archive" name="survivr.jar">
+      <element id="module-output" name="survivr" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/kryonet-2.21-all.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/slick/lib/jogg-0.0.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jar/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/slick/lib/jorbis-0.0.15.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/slick/lib/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/slick/lib/slick.jar" path-in-jar="/" />
+      <element id="file-copy" path="$PROJECT_DIR$/libs/kryonet-2.21-all.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/libs/slick/lib/lwjgl.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/libs/slick/lib/slick.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/libs/jar/lwjgl.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/libs/slick/lib/jorbis-0.0.15.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/libs/slick/lib/jogg-0.0.7.jar" />
+    </root>
+  </artifact>
+</component>
