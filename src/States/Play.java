@@ -4,11 +4,19 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Network.NetworkPlayer;
+import Renderer.FBORenderer;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.opengl.pbuffer.FBOGraphics;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -17,9 +25,9 @@ import GUI.ActionBar;
 import GUI.Debug;
 import Game.Survivr;
 import Network.NetworkClient;
-import Network.NetworkDetails;
-import sun.font.TrueTypeFont;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,9 +36,12 @@ public class Play extends BasicGameState {
 	private int state;
     private Rectangle back;
 
-
 	// Colours
 	private Color backgroundColour = new Color(126, 178, 255);
+
+	//Rendering
+	private FBORenderer fbo;
+	private boolean done;
 
 	// Modules
 	private Input input;
@@ -52,12 +63,13 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		
+
+		fbo = new FBORenderer();
+
 		JFrame frame = new JFrame("Enter Name: ");
 		String name = JOptionPane.showInputDialog(this);
 
         back = new Rectangle(0, 0, Survivr.V_WIDTH, Survivr.V_HEIGHT);
-
 
 
         // create random shapes
@@ -103,6 +115,7 @@ public class Play extends BasicGameState {
 		debug.update(player);
 		actionBar.update();
 		player.update(delta);
+		fbo.update(delta);
 	}
 
     public void drawLighting(Graphics g){
@@ -129,11 +142,10 @@ public class Play extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 
 		g.translate(0,0);
+		g.scale(1.0f, 1.0f);
 
 		g.setColor(Color.black);
         g.fill(back);
-		debug.render();
-
 
 		player.render(g);
         for(int i = 0; i < shapeList.size(); i++){
@@ -144,11 +156,16 @@ public class Play extends BasicGameState {
         drawLighting(g);
 
 		g.setColor(Color.red);
-
 		drawNetworkPlayers(g);
 
-
+		debug.render();
 		actionBar.render(g, container);
+
+
+		// FBO RENDERING
+		//fbo.draw(new Rectangle(400, 400, 100, 100), Color.cyan);
+		//fbo.render();
+
 	}
 
 	@Override
