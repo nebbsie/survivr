@@ -2,6 +2,7 @@ package Network;
 
 import java.io.IOException;
 
+import Network.Packets.Packet04ClientUpdate;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 
@@ -38,6 +39,9 @@ public class NetworkClient {
 		kyro.register(Packet01Connect.class);
 		kyro.register(Packet02Message.class);
 		kyro.register(Packet03Update.class);
+		kyro.register(Packet04ClientUpdate.class);
+		kyro.register(java.util.ArrayList.class);
+		kyro.register(NetworkPlayer.class);
 	}
 
 }

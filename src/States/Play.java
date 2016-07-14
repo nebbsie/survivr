@@ -111,11 +111,18 @@ public class Play extends BasicGameState {
         }
     }
 
+	public void drawNetworkPlayers(Graphics g){
+		if(Survivr.details.players.size() > 0){
+			g.fill(new Circle(Survivr.details.players.get(0).x, Survivr.details.players.get(0).y, 40));
+		}
+	}
+
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		g.setColor(Color.black);
         g.fill(back);
 		debug.render();
+
 		player.render(g);
         for(int i = 0; i < shapeList.size(); i++){
             g.setColor(Color.green);
@@ -123,6 +130,11 @@ public class Play extends BasicGameState {
             g.fill(shapeList.get(i));
         }
         drawLighting(g);
+
+		g.setColor(Color.red);
+
+		drawNetworkPlayers(g);
+
 		actionBar.render(g, container);
 	}
 

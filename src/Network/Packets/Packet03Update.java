@@ -1,13 +1,12 @@
 package Network.Packets;
 
-import Entities.Client;
+import Network.NetworkPlayer;
 
 import java.util.ArrayList;
 
 public class Packet03Update {
-	
-	public int players;
 
-	public ArrayList<Client> clients = new ArrayList<Client>();
+	public int players;
+	public ArrayList<NetworkPlayer> clients = new ArrayList<>();
 
 }
