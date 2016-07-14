@@ -1,5 +1,7 @@
 package Entities;
 
+import Network.Packets.Packet04ClientUpdate;
+import com.esotericsoftware.kryonet.Connection;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -47,12 +49,23 @@ public class Player {
 		
 		player.setLocation(x, y);
 		reset();
+		updateServer();
 	}
 	
 	public void render(Graphics g){
 		g.setColor(Color.green);
 		g.setAntiAlias(true);
 		g.fill(player);
+	}
+
+	private void updateServer(){
+		Packet04ClientUpdate p = new Packet04ClientUpdate();
+		p.x = x;
+		p.y = y;
+
+		if(Survivr.details.connection != null){
+			Survivr.details.connection.sendTCP(p);
+		}
 	}
 	
 	private void reset(){

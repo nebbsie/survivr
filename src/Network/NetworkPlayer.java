@@ -1,6 +1,6 @@
 package Network;
 
 public class NetworkPlayer {
-    public int x;
-    public int y;
+    public float x;
+    public float y;
 }

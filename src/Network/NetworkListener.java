@@ -27,6 +27,9 @@ public class NetworkListener extends Listener {
 	
 	@Override
 	public void connected(Connection c){
+
+		Survivr.details.connection = c;
+
 		System.out.println("[CLIENT] >>  You Have Connected To Server");
 
 		Packet01Connect p1 = new Packet01Connect();

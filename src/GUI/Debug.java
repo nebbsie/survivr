@@ -13,8 +13,8 @@ public class Debug {
 	private Font Rawfont = new Font("Bebas", Font.BOLD, 15);
 	private TrueTypeFont font = new TrueTypeFont(Rawfont, true);
 	
-	private int players = 0;
-	private int ping = 0;
+	private int players;
+	private int ping;
 	private InetSocketAddress address;
 
 	private boolean isDebug;
