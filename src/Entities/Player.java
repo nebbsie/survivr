@@ -51,7 +51,6 @@ public class Player {
 		ty = (img.getHeight() / 2);
 		img.setRotation(targetAng);
 
-		
 		x += dx * delta;
 		y += dy * delta;
 		player.setLocation(x, y);

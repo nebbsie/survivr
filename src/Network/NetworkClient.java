@@ -13,7 +13,7 @@ import Network.Packets.Packet03Update;
 public class NetworkClient {
 	
 	int portNumber = 49152;
-	String IPAddress = "92.15.200.237";
+	String IPAddress = "localhost";
 	
 	public Client client;
 	private NetworkListener nl;
