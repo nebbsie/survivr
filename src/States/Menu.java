@@ -76,6 +76,8 @@ public class Menu extends BasicGameState {
 
         //sound.play();
 
+		connect();
+
 
         crab = new Image("res\\menu\\crab.png");
 
