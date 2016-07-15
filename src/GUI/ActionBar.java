@@ -26,9 +26,14 @@ public class ActionBar {
 	private Color barColour;
 	private Color itemColour;
 
+	//Sections
+	private MenuSection inv;
 	
 	//Modules
 	private Input input;
+
+	//Variables
+	private boolean isInventory = false;
 
 	public ActionBar(GameContainer container) {
 
@@ -41,17 +46,39 @@ public class ActionBar {
 
 		itemsArea = new MouseOverArea(container, itemsButton, 5, Survivr.V_HEIGHT - 100);
 		itemsArea.setMouseOverImage(itemsButtonOver);
+
+		inv = new MenuSection(5, Survivr.V_HEIGHT-500, container);
 	}
 
 	public void update() {
 
+		if(itemsArea.isMouseOver() && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+			if (isInventory){
+				isInventory = false;
+				inv.setSelected(false);
+			}else{
+				isInventory = true;
+				inv.setSelected(true);
+			}
+		}
+
+			inv.update();
+
+
 	}
 
 	public void render(Graphics g, GameContainer container) {
+
+		inv.render(g);
+
 		g.setColor(barColour);
 		g.fill(bar);
 
 		itemsArea.render(container, g);
+
+
+
+
 
 	}
 

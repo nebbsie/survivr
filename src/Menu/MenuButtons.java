@@ -32,8 +32,11 @@ public class MenuButtons {
 
 		try {
 
-			mouseOver = new Sound("res\\menu\\sounds\\mouseOver.ogg");
-			mouseClick = new Sound("res\\menu\\sounds\\mouseClick.ogg");
+			//mouseOver = new Sound("res\\menu\\sounds\\mouseOver.ogg");
+			//mouseClick = new Sound("res\\menu\\sounds\\mouseClick.ogg");
+
+			mouseOver = new Sound("res\\sounds\\oawhh.ogg");
+			mouseClick = new Sound("res\\sounds\\ouch.ogg");
 
 			if (Survivr.SCALE == 5 || Survivr.SCALE == 6) {
 

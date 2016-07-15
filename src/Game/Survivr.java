@@ -2,6 +2,7 @@ package Game;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -12,6 +13,7 @@ public class Survivr extends StateBasedGame {
 	public static AppGameContainer app;
 	public static NetworkDetails details;
 	public static Screen screen;
+	public static Input input;
 
 	// Game parameters
 	private final static String gamename = "Survivr";
@@ -38,6 +40,7 @@ public class Survivr extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
+		input = container.getInput();
 		this.getState(menu).init(container, this);
 		//this.getState(play).init(container, this);
 
