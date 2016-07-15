@@ -74,7 +74,7 @@ public class Menu extends BasicGameState {
 		mouseClick = new Sound("res\\menu\\sounds\\mouseClick.ogg");
         sound = new Music("res\\sounds\\menu.ogg");
 
-        sound.play();
+        //sound.play();
 
 
         crab = new Image("res\\menu\\crab.png");

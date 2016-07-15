@@ -42,7 +42,7 @@ public class ActionBar {
 		loadImages();
 
 		bar = new Rectangle(0, Survivr.V_HEIGHT - 100, Survivr.V_WIDTH, 200);
-		barColour = new Color(212, 212, 212, 160);
+		barColour = new Color(212, 212, 212, 255);
 
 		itemsArea = new MouseOverArea(container, itemsButton, 5, Survivr.V_HEIGHT - 100);
 		itemsArea.setMouseOverImage(itemsButtonOver);
@@ -70,16 +70,10 @@ public class ActionBar {
 	public void render(Graphics g, GameContainer container) {
 
 		inv.render(g);
-
 		g.setColor(barColour);
 		g.fill(bar);
 
 		itemsArea.render(container, g);
-
-
-
-
-
 	}
 
 	public void loadImages() {

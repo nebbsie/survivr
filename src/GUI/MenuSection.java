@@ -66,7 +66,7 @@ public class MenuSection {
     }
 
     public void setUP(){
-        y = finalY;
+        //y = finalY;
     }
 
     public void update(int delta){
@@ -83,8 +83,6 @@ public class MenuSection {
         }else{
             showItems = false;
         }
-
-        System.out.println(delta);
 
         if(isSelected){
             if(up()){
@@ -121,10 +119,6 @@ public class MenuSection {
             }
         }
 
-        if(isSelected && showItems){
-            scrollBar.update();
-        }
-
         if(scrollBar.isUp()){
             items.forEach(MenuItem::scrollDown);
         }else if(scrollBar.isDown()){
@@ -139,17 +133,11 @@ public class MenuSection {
         g.setColor(colour);
         g.fill(area);
 
-
-
-
-
-
         if(showItems){
             for(MenuItem i : items){
                 i.render(g);
             }
 
-            scrollBar.render(g);
         }
 
     }

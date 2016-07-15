@@ -45,6 +45,9 @@ public class Play extends BasicGameState {
 
 	// Modules
 	private Input input;
+	private Rectangle light;
+
+	private Image image;
 
 	// GUI
 	private Debug debug;
@@ -54,6 +57,10 @@ public class Play extends BasicGameState {
 	private Player player;
     private ArrayList<Shape> shapeList = new ArrayList<>();
     private ArrayList<Point> pointList = new ArrayList<>();
+
+	private Graphics imageGraphics;
+
+
 
 
 	public Play(int state) {
@@ -66,6 +73,10 @@ public class Play extends BasicGameState {
 		fbo = new FBORenderer();
 
         back = new Rectangle(0, 0, Survivr.V_WIDTH, Survivr.V_HEIGHT);
+
+		light = new Rectangle(0, 0, 1280, 720);
+
+		image = new Image(1280, 720);
 
         // create random shapes
         Random rand = new Random();
@@ -139,7 +150,8 @@ public class Play extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 
 		g.setColor(new Color(20, 112, 162));
-        g.fill(back);
+		g.fill(back);
+
 
 		player.render(g);
         drawLighting(g);
@@ -152,8 +164,12 @@ public class Play extends BasicGameState {
 		g.setColor(Color.red);
 		drawNetworkPlayers(g);
 
+		g.setDrawMode(Graphics.MODE_NORMAL);
+
 		debug.render();
 		actionBar.render(g, container);
+
+		g.drawImage(image, 0, 0);
 
 
 		// FBO RENDERING

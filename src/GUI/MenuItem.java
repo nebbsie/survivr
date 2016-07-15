@@ -42,7 +42,6 @@ public class MenuItem {
             g.fill(item);
         }
 
-
     }
 
     public void scrollUp(){
