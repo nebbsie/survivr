@@ -65,10 +65,7 @@ public class Play extends BasicGameState {
 
 		fbo = new FBORenderer();
 
-
-
         back = new Rectangle(0, 0, Survivr.V_WIDTH, Survivr.V_HEIGHT);
-
 
         // create random shapes
         Random rand = new Random();
@@ -116,6 +113,7 @@ public class Play extends BasicGameState {
         int sourceX = (int)player.getX() + (int)player.getRadius();
         int sourceY = (int)player.getY() + (int)player.getRadius();
 
+		g.setColor(new Color(240, 240, 240));
         for(int i = 0; i < pointList.size(); i++){
             g.drawLine(sourceX, sourceY, pointList.get(i).getX(), pointList.get(i).getY());
         }
@@ -140,16 +138,16 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 
-		g.setColor(Color.black);
+		g.setColor(new Color(20, 112, 162));
         g.fill(back);
 
 		player.render(g);
+        drawLighting(g);
         for(int i = 0; i < shapeList.size(); i++){
-            g.setColor(Color.green);
+            g.setColor(new Color(10, 90, 130));
             g.setAntiAlias(true);
             g.fill(shapeList.get(i));
         }
-        drawLighting(g);
 
 		g.setColor(Color.red);
 		drawNetworkPlayers(g);
