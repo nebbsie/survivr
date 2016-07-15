@@ -45,7 +45,6 @@ public class Play extends BasicGameState {
 
 	// Modules
 	private Input input;
-	private NetworkClient server;
 
 	// GUI
 	private Debug debug;
@@ -66,8 +65,7 @@ public class Play extends BasicGameState {
 
 		fbo = new FBORenderer();
 
-		JFrame frame = new JFrame("Enter Name: ");
-		String name = JOptionPane.showInputDialog(this);
+
 
         back = new Rectangle(0, 0, Survivr.V_WIDTH, Survivr.V_HEIGHT);
 
@@ -93,13 +91,9 @@ public class Play extends BasicGameState {
 		debug = new Debug();
 		input = container.getInput();
 		actionBar = new ActionBar(container);
-		player = new Player(container, name);
+		player = new Player(container, "jerry");
 		
-		try {
-			server = new NetworkClient(name);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	@Override
@@ -113,7 +107,7 @@ public class Play extends BasicGameState {
 		}
 
 		debug.update(player);
-		actionBar.update();
+		actionBar.update(delta);
 		player.update(delta);
 		fbo.update(delta);
 	}

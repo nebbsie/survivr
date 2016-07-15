@@ -50,7 +50,7 @@ public class ActionBar {
 		inv = new MenuSection(5, Survivr.V_HEIGHT-500, container);
 	}
 
-	public void update() {
+	public void update(int delta) {
 
 		if(itemsArea.isMouseOver() && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
 			if (isInventory){
@@ -62,7 +62,7 @@ public class ActionBar {
 			}
 		}
 
-			inv.update();
+			inv.update(delta);
 
 
 	}

@@ -31,7 +31,7 @@ public class ScrollBar {
 
 
     public ScrollBar(MenuSection menu){
-        scrollX = menu.getX() + menu.getWidth()+ 5;
+        scrollX = (int) (menu.getX() + menu.getWidth()+ 5);
         scrollY = menu.getFinalY();
 
         System.out.println(scrollX);

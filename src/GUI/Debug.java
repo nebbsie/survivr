@@ -11,7 +11,7 @@ import Network.NetworkDetails;
 
 public class Debug {
 
-	private Font Rawfont = new Font("Bebas", Font.BOLD, 15);
+	private Font Rawfont = new Font("asd Regular", Font.BOLD, 15);
 	private TrueTypeFont font = new TrueTypeFont(Rawfont, true);
 	
 	private int players;

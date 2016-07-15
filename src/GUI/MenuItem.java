@@ -54,8 +54,8 @@ public class MenuItem {
     }
 
     public void setPos(int posx, int posy ,MenuSection section){
-            x = section.getX() + ((posx*width) + (padx*posx)) + padx*2 ;
-            y = section.getY() + ((posy*height)  + (pady*posy)) + pady*2 + scroll;
+            x = (int) (section.getX() + ((posx*width) + (padx*posx)) + padx*2);
+            y = (int) (section.getY() + ((posy*height)  + (pady*posy)) + pady*2 + scroll);
 
         if(y > section.getY() + section.getHeight() || y + height > section.getY() + section.getHeight()
                 || y < section.getY()){

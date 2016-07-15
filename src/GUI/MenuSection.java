@@ -20,8 +20,8 @@ public class MenuSection {
     private int finalX;
     private int finalY;
 
-    private int x;
-    private int y;
+    private float x;
+    private float y;
 
     private int width = 300;
     private int height = 400;
@@ -65,7 +65,11 @@ public class MenuSection {
 
     }
 
-    public void update(){
+    public void setUP(){
+        y = finalY;
+    }
+
+    public void update(int delta){
 
         if(input.isKeyPressed(Input.KEY_F7)){
             items.add(new MenuItem(finalX, finalY, 5, 5));
@@ -80,16 +84,19 @@ public class MenuSection {
             showItems = false;
         }
 
+        System.out.println(delta);
+
         if(isSelected){
             if(up()){
-                y-=4;
+                y-=1*delta;
                 isAnimating = true;
             }else{
                 isAnimating = false;
+                setUP();
             }
         }else{
             if (!down()){
-                y+=4;
+                y+=1*delta;
                 isAnimating = true;
 
             }else{
@@ -174,11 +181,11 @@ public class MenuSection {
         }
     }
 
-    public int getX(){
+    public float getX(){
         return x;
     }
 
-    public int getY(){
+    public float getY(){
         return y;
     }
 

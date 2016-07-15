@@ -1,5 +1,6 @@
 package Game;
 
+import Network.NetworkClient;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -14,6 +15,7 @@ public class Survivr extends StateBasedGame {
 	public static NetworkDetails details;
 	public static Screen screen;
 	public static Input input;
+	public static NetworkClient server;
 
 	// Game parameters
 	private final static String gamename = "Survivr";
@@ -31,20 +33,24 @@ public class Survivr extends StateBasedGame {
 	// Game states
 	public static int menu = 0;
 	public static int play = 1;
+	public static int splash = 2;
+
 
 	public Survivr(String name) {
 		super(name);
 		this.addState(new States.Menu(menu));
 		this.addState(new States.Play(play));
+		this.addState(new States.Splash(splash));
 	}
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		input = container.getInput();
-		this.getState(menu).init(container, this);
+		//this.getState(menu).init(container, this);
+		this.getState(splash).init(container, this);
 		//this.getState(play).init(container, this);
 
-		this.enterState(menu);
+		this.enterState(splash);
 	}
 
 	public static void main(String[] args) {
@@ -56,10 +62,10 @@ public class Survivr extends StateBasedGame {
 				FULLSCREEN = true;
 			}
 			app.setDisplayMode(WIDTH * SCALE, HEIGHT * SCALE, FULLSCREEN);
-			//app.setTargetFrameRate(FPS);
+			app.setTargetFrameRate(FPS);
 			app.setAlwaysRender(true);
 			app.setShowFPS(false);
-			//app.setVSync(VSYNC);
+			app.setVSync(VSYNC);
 			app.start();
 		} catch (SlickException e) {
 
