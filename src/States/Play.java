@@ -121,8 +121,8 @@ public class Play extends BasicGameState {
 	}
 
     public void drawLighting(Graphics g){
-        int sourceX = (int)player.getX() + (int)player.getRadius();
-        int sourceY = (int)player.getY() + (int)player.getRadius();
+        int sourceX = (int)player.getX() + player.getWidth()/2;
+        int sourceY = (int)player.getY() + player.getHeight()/2;
 
 		g.setColor(new Color(240, 240, 240));
         for(int i = 0; i < pointList.size(); i++){
@@ -152,9 +152,9 @@ public class Play extends BasicGameState {
 		g.setColor(new Color(20, 112, 162));
 		g.fill(back);
 
-
+		drawLighting(g);
 		player.render(g);
-        drawLighting(g);
+
         for(int i = 0; i < shapeList.size(); i++){
             g.setColor(new Color(10, 90, 130));
             g.setAntiAlias(true);

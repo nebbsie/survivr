@@ -2,64 +2,78 @@ package Entities;
 
 import Network.Packets.Packet04ClientUpdate;
 import com.esotericsoftware.kryonet.Connection;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.*;
+import org.newdawn.slick.geom.*;
 
 import Game.Survivr;
 
 public class Player {
-	
-	private Circle player;
+
 	private Input input;
 	private String username;
-	
-	private Vector2f pos;
+	private Circle player;
+	private Image img;
+
 	private float x;
 	private float y;
 	private float dx = 0;
 	private float dy = 0;
+
 	private float speed = 0.2f;
-	
+
+	private int width = 40;
+	private int height = 40;
+
+	private float targetAng;
+	private int tx;
+	private int ty;
+
 	public Player(GameContainer container, String username){
+		this.username = username;
 		x = Survivr.V_WIDTH/2-10;
 		y = Survivr.V_HEIGHT/2-10;
-		player = new Circle(x,y,20);
+
+		try {
+			img  = new Image("res\\game\\player.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		player = new Circle(x, y, width, height);
+
 		input = container.getInput();
-		this.username = username;
 	}
-	
+
 	public void update(int delta){
+		checkInput();
 
-		
-		if(input.isKeyDown(Input.KEY_W)){
+		targetAng = (float) getTargetAngle(x, y, input.getMouseX(), input.getMouseY());
+		tx = (img.getWidth() / 2);
+		ty = (img.getHeight() / 2);
+		img.setRotation(targetAng);
 
-			dy -= speed;
-		}else if(input.isKeyDown(Input.KEY_S)){
-			dy += speed;
-		}
-		
-		if(input.isKeyDown(Input.KEY_A)){
-			dx -= speed;
-
-		}else if(input.isKeyDown(Input.KEY_D)){
-			dx += speed;
-		}
 		
 		x += dx * delta;
 		y += dy * delta;
-		
 		player.setLocation(x, y);
-		reset();
+
 		updateServer();
+		reset();
 	}
 	
 	public void render(Graphics g){
-		g.setColor(new Color(240, 240, 240));
-		g.fill(player);
+		img.draw(x, y);
+	}
+
+	public void checkInput(){
+		if(input.isKeyDown(Input.KEY_W))
+			dy -= speed;
+		else if(input.isKeyDown(Input.KEY_S))
+			dy += speed;
+
+		if(input.isKeyDown(Input.KEY_A))
+			dx -= speed;
+		else if(input.isKeyDown(Input.KEY_D))
+			dx += speed;
 	}
 
 	private void updateServer(){
@@ -67,25 +81,52 @@ public class Player {
 		p.x = x;
 		p.y = y;
 
-		if(Survivr.details.connection != null){
+		if(Survivr.details.connection != null)
 			Survivr.details.connection.sendTCP(p);
-		}
 	}
-	
+
 	private void reset(){
 		dx = 0;
 		dy = 0;
 	}
 
-	public float getX(){return x;}
-	public float getY(){return y;}
-	public float getRadius(){return player.getRadius();}
-
-	public String getUsername() {
-		return username;
+	public double getDistanceBetween(float startX, float startY, float endX, float endY) {
+		return Math.sqrt((Math.pow((endX - startX), 2)) + (Math.pow((endY - startY), 2)));
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public double getTargetAngle(float startX, float startY, float targetX, float targetY) {
+		double dist = getDistanceBetween(startX, startY, targetX, targetY);
+		double sinNewAng = (startY - targetY) / dist;
+		double cosNewAng = (targetX - startX) / dist;
+		double angle = 0;
+
+		if (sinNewAng > 0) {
+			if (cosNewAng > 0) {
+				angle = 90 - Math.toDegrees(Math.asin(sinNewAng));
+			} else {
+				angle = Math.toDegrees(Math.asin(sinNewAng)) + 270;
+			}
+		} else {
+			angle = Math.toDegrees(Math.acos(cosNewAng)) + 90;
+		}
+		return angle;
+	}
+
+	public float getX(){return x;}
+	public float getY(){return y;}
+	public int getWidth() {
+		return width;
+	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	public String getUsername() {
+		return username;
 	}
 }
