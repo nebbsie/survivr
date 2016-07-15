@@ -29,6 +29,7 @@ import Network.NetworkClient;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Play extends BasicGameState {
@@ -56,12 +57,8 @@ public class Play extends BasicGameState {
 	//Entities
 	private Player player;
     private ArrayList<Shape> shapeList = new ArrayList<>();
-    private ArrayList<Point> pointList = new ArrayList<>();
 
 	private Graphics imageGraphics;
-
-
-
 
 	public Play(int state) {
 		this.state = state;
@@ -84,23 +81,10 @@ public class Play extends BasicGameState {
             shapeList.add(new Rectangle(rand.nextInt(Survivr.V_WIDTH), rand.nextInt(Survivr.V_HEIGHT), 50, 50));
         }
 
-        // populate points list with points of all shapes
-        for(int i = 0; i < shapeList.size(); i++) {
-            for (int j = 0; j < shapeList.get(i).getPointCount(); j++) {
-                pointList.add(new Point(shapeList.get(i).getPoint(j)[0], shapeList.get(i).getPoint(j)[1]));
-            }
-        }
-
-        pointList.add(new Point(back.getX(), back.getY()));
-        pointList.add(new Point(back.getX() + back.getWidth(), back.getY()));
-        pointList.add(new Point(back.getX(), back.getY() + back.getHeight()));
-        pointList.add(new Point(back.getX() + back.getWidth(), back.getY() + back.getHeight()));
-
 		debug = new Debug();
 		input = container.getInput();
 		actionBar = new ActionBar(container);
 		player = new Player(container, "jerry");
-		
 
 	}
 
@@ -120,13 +104,40 @@ public class Play extends BasicGameState {
 		fbo.update(delta);
 	}
 
+
+
     public void drawLighting(Graphics g){
         int sourceX = (int)player.getX() + player.getWidth()/2;
         int sourceY = (int)player.getY() + player.getHeight()/2;
 
 		g.setColor(new Color(240, 240, 240));
-        for(int i = 0; i < pointList.size(); i++){
-            g.drawLine(sourceX, sourceY, pointList.get(i).getX(), pointList.get(i).getY());
+        for(int i = 0; i < shapeList.size(); i++){
+            // solve line angles from light source to points
+            double [][] angles = new double[4][4];
+            for(int j = 0; j < 4; j++){
+                int pointX = (int)shapeList.get(i).getPoint(j)[0];
+                int pointY = (int)shapeList.get(i).getPoint(j)[1];
+                angles[j][0] = player.getDegAngleTo(pointX, pointY);
+                angles[j][1] = j;
+            }
+
+            double low = angles[0][0];
+            double high = angles[0][0];
+            int lIndex = 0;
+            int hIndex = 0;
+            for(int j = 1; j < 4; j++){
+                if(angles[j][0] < low){
+                    low = angles[j][0];
+                    lIndex = j;
+                }
+                if(angles[j][0] > high){
+                    high = angles[j][0];
+                    hIndex = j;
+                }
+            }
+
+            g.drawLine(sourceX, sourceY, shapeList.get(i).getPoint(lIndex)[0], shapeList.get(i).getPoint(lIndex)[1]);
+            g.drawLine(sourceX, sourceY, shapeList.get(i).getPoint(hIndex)[0], shapeList.get(i).getPoint(hIndex)[1]);
         }
     }
 

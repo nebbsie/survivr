@@ -89,6 +89,12 @@ public class Player {
 		dy = 0;
 	}
 
+	public double getDegAngleTo(int xE, int yE){
+		int xS = (int)x + (width / 2);
+		int yS = (int)y + (height / 2);
+		return Math.toDegrees(Math.atan2(xE - xS, yE - yS));
+	}
+
 	public double getDistanceBetween(float startX, float startY, float endX, float endY) {
 		return Math.sqrt((Math.pow((endX - startX), 2)) + (Math.pow((endY - startY), 2)));
 	}
