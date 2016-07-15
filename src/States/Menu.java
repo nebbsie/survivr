@@ -11,6 +11,7 @@ import org.newdawn.slick.gui.MouseOverArea;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+
 import Game.Survivr;
 import Menu.MenuButtons;
 
@@ -45,6 +46,7 @@ public class Menu extends BasicGameState {
 	//Sounds
 	private Sound mouseOver;
 	private Sound mouseClick;
+    private Music sound;
 
 	//Fonts
 	private Font Rawfont;
@@ -70,6 +72,10 @@ public class Menu extends BasicGameState {
 		font = new TrueTypeFont(Rawfont, true);
 		mouseOver = new Sound("res\\menu\\sounds\\mouseOver.ogg");
 		mouseClick = new Sound("res\\menu\\sounds\\mouseClick.ogg");
+        sound = new Music("res\\sounds\\menu.ogg");
+
+        sound.play();
+
 
         crab = new Image("res\\menu\\crab.png");
 

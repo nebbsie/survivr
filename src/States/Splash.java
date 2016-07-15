@@ -7,12 +7,14 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class Splash extends BasicGameState {
 
     private int state;
     private Image img;
-    private float DELAY = 20;
+    private float DELAY = 2000;
     private float count = 0;
 
     public Splash(int state){
@@ -46,7 +48,7 @@ public class Splash extends BasicGameState {
         if(count < DELAY){
             count+= 1*delta;
         }else{
-            game.enterState(Survivr.menu);
+            game.enterState(Survivr.menu, new FadeOutTransition(), new FadeInTransition());
         }
     }
 }

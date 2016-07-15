@@ -8,6 +8,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import Network.NetworkDetails;
+import org.newdawn.slick.state.transition.Transition;
 
 public class Survivr extends StateBasedGame {
 
