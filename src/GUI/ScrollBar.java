@@ -62,8 +62,11 @@ public class ScrollBar {
 
         }if(selected && Survivr.input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
 
+            if(mouseY + width/2 + 8 < minY && mouseY - width/2 - 8 > maxY){
+                scrollY = mouseY - height/2;
 
-            scrollY = mouseY - height/2;
+            }
+
         }
 
 
