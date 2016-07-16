@@ -44,15 +44,23 @@ public class Player {
 	}
 
 	public void update(int delta){
-		checkInput();
+		//checkInput();
 
 		targetAng = (float) getTargetAngle(x, y, input.getMouseX(), input.getMouseY());
 		tx = (img.getWidth() / 2);
 		ty = (img.getHeight() / 2);
 		img.setRotation(targetAng);
 
-		x += dx * delta;
-		y += dy * delta;
+		Vector2f direction = new Vector2f(input.getMouseX()  - x, input.getMouseY()  - y);
+		direction.getTheta();
+
+		speed = 0.1f * delta;
+
+		if(input.isKeyDown(Input.KEY_W)){
+			x += speed * Math.cos(Math.toRadians(direction.getTheta()));
+			y += speed * Math.sin(Math.toRadians(direction.getTheta()));
+		}
+
 		player.setLocation(x, y);
 
 		updateServer();
