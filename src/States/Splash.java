@@ -14,7 +14,7 @@ public class Splash extends BasicGameState {
 
     private int state;
     private Image img;
-    private float DELAY = 20;
+    private float DELAY = 2;
     private float count = 0;
 
     public Splash(int state){

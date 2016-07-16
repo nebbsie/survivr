@@ -69,6 +69,7 @@ public class Debug {
 			font.drawString(Survivr.V_WIDTH - 120, 0, "!DEBUG MODE!");
 			font.drawString(0, 105, "X: " + p.getX() + "Y: " + p.getY());
 			font.drawString(0, 120, "Username: " + p.getUsername());
+			font.drawString(0, 135, "Projectiles : " + p.getAmountOfProjectiles());
 
 			if(isCameraAreaShowing){
 				Survivr.app.getGraphics().setColor(Color.red);

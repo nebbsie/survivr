@@ -7,7 +7,11 @@ import org.newdawn.slick.geom.*;
 
 import Game.Survivr;
 
+import java.util.ArrayList;
+
 public class Player {
+
+    private ArrayList<Projectile> projectiles;
 
     private Input input;
 
@@ -56,14 +60,16 @@ public class Player {
 
         // Load input
         input = Survivr.app.getInput();
+        projectiles = new ArrayList<>();
     }
 
     public void update(int delta) {
         setPointingAngle();
         setWalkingDirection(delta);
         checkForWalking();
+        checkAction();
         walk();
-
+        updateProjectiles(delta);
         updateServer();
     }
 
@@ -71,17 +77,38 @@ public class Player {
         img.draw(x, y);
         lightCircle.setCenterX(x + (width / 2));
         lightCircle.setCenterY(y + (height / 2));
+        renderProjectiles(g);
         g.draw(lightCircle);
+    }
+
+    private void renderProjectiles(Graphics g){
+        for(Projectile p : projectiles){
+            p.render(g);
+        }
+    }
+
+    private void updateProjectiles(int delta){
+        for(Projectile p : projectiles){
+            p.update(delta);
+        }
+    }
+
+    private void shoot(){
+        System.out.println("new projectile");
+        projectiles.add(new Projectile(x + width/2, y + height/2));
     }
 
     private void walk() {
         if (walking) {
-
             x += speed * Math.cos(Math.toRadians(direction.getTheta()));
             y += speed * Math.sin(Math.toRadians(direction.getTheta()));
-
-
             player.setLocation(x, y);
+        }
+    }
+
+    private void checkAction(){
+        if(input.isKeyPressed(Input.KEY_SPACE)){
+            shoot();
         }
     }
 
@@ -166,5 +193,8 @@ public class Player {
 
     public String getUsername() {
         return username;
+    }
+    public int getAmountOfProjectiles(){
+        return projectiles.size();
     }
 }
