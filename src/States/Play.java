@@ -24,8 +24,9 @@ public class Play extends BasicGameState {
     private Rectangle back;
 
     // Colours
-    private Color backgroundColour = new Color(20, 112, 162);
+    private Color backgroundColour = new Color(100, 150, 180);
     private Color boxColour = new Color(10, 90, 130);
+    private Color lightAlpha = new Color(0f,0f,0f,0.7f);
 
     // GUI
     private Debug debug;
@@ -39,6 +40,7 @@ public class Play extends BasicGameState {
     private ArrayList<Tile> scene;
     private Image tile;
     private ArrayList<LightSource> worldLights;
+    private Shape alpha;
 
     private boolean isGridShowing;
 
@@ -56,6 +58,7 @@ public class Play extends BasicGameState {
         scene = new ArrayList<>();
         worldLights = new ArrayList<>();
         worldLights.add(new LightSource(0, 0, 400));
+        alpha = new Rectangle(0, 0, Survivr.V_WIDTH / 2, Survivr.V_HEIGHT);
 
         tile = new Image("res\\game\\tile.png");
 
@@ -66,9 +69,7 @@ public class Play extends BasicGameState {
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-
         checkInput(game);
-
         debug.update(player);
         actionBar.update(delta);
         player.update(delta);
@@ -98,8 +99,12 @@ public class Play extends BasicGameState {
 
     private void drawLighting(Graphics g) {
         for(int i = 0; i < worldLights.size(); i++){
-            worldLights.get(i).render(shapeList, g);
+            alpha = worldLights.get(i).render(shapeList, g, alpha);
         }
+
+        g.setColor(lightAlpha);
+        g.fill(alpha);
+        alpha = new Rectangle(0, 0, Survivr.V_WIDTH, Survivr.V_HEIGHT);
     }
 
     private void renderGrid(Graphics g){

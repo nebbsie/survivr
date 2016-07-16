@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class LightSource {
     private int x, y, pointX, pointY, lIndex, hIndex;
-    private Circle lightRange;
+    public Circle lightRange;
     private double angles[][];
     private double low, high;
     private float inter1x, inter1y, inter2x, inter2y;
@@ -103,12 +103,14 @@ public class LightSource {
 //        shadow.getPoint(3)[1] = shape.getPoint(lIndex)[1];
     }
 
-    public void render(ArrayList<Shape>shapes, Graphics g){
-        g.setColor(Color.black);
-        g.draw(lightRange);
+    public Shape render(ArrayList<Shape>shapes, Graphics g, Shape alpha){
+        //g.setColor(Color.black);
+        //g.draw(lightRange);
+        alpha = alpha.subtract(lightRange)[0];
         for(int i = 0; i < shapes.size(); i++){
             solveShadow(shapes.get(i));
-            g.fill(shadow);
+            alpha = alpha.union(shadow)[0];
         }
+        return alpha;
     }
 }
