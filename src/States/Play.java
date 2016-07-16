@@ -6,6 +6,7 @@ import GUI.Debug;
 import Game.Survivr;
 import Entities.Tile;
 import Network.NetworkPlayer;
+import Renderer.LightSource;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Polygon;
@@ -37,12 +38,9 @@ public class Play extends BasicGameState {
     //World
     private ArrayList<Tile> scene;
     private Image tile;
-
-    //Shadows
-    private ArrayList<Polygon> shadowList;
+    private ArrayList<LightSource> worldLights;
 
     private boolean isGridShowing;
-
 
     public Play(int state) {
         this.state = state;
@@ -56,7 +54,8 @@ public class Play extends BasicGameState {
         actionBar = new ActionBar(container);
         player = new Player();
         scene = new ArrayList<>();
-        shadowList = new ArrayList<>();
+        worldLights = new ArrayList<>();
+        worldLights.add(new LightSource(0, 0, 400));
 
         tile = new Image("res\\game\\tile.png");
 
@@ -73,12 +72,12 @@ public class Play extends BasicGameState {
         debug.update(player);
         actionBar.update(delta);
         player.update(delta);
+        // temporary! move the world light with the player
+        worldLights.get(0).update((int)player.getX() + (player.getWidth() / 2), (int)player.getY() + (player.getHeight() / 2));
     }
 
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-
-
         g.setColor(backgroundColour);
         g.fill(back);
 
@@ -95,6 +94,12 @@ public class Play extends BasicGameState {
         //GUI rendering
         debug.render();
         actionBar.render(g, container);
+    }
+
+    private void drawLighting(Graphics g) {
+        for(int i = 0; i < worldLights.size(); i++){
+            worldLights.get(i).render(shapeList, g);
+        }
     }
 
     private void renderGrid(Graphics g){
@@ -117,13 +122,12 @@ public class Play extends BasicGameState {
                 isGridShowing = true;
             }
         }
-
     }
 
     private void populateShapes() {
         // create random shapes
         Random rand = new Random();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 2; i++) {
             shapeList.add(new Rectangle(rand.nextInt(Survivr.V_WIDTH), rand.nextInt(Survivr.V_HEIGHT), 50, 50));
         }
     }
@@ -134,58 +138,6 @@ public class Play extends BasicGameState {
                 scene.add(new Tile(x ,y, tile));
             }
 
-        }
-    }
-
-    private void drawLighting(Graphics g) {
-        int sourceX = (int) player.getX() + player.getWidth() / 2;
-        int sourceY = (int) player.getY() + player.getHeight() / 2;
-
-        g.setColor(new Color(240, 240, 240));
-        for (int i = 0; i < shapeList.size(); i++) {
-            // solve line angles from light source to points
-            double[][] angles = new double[4][4];
-            for (int j = 0; j < 4; j++) {
-                int pointX = (int) shapeList.get(i).getPoint(j)[0];
-                int pointY = (int) shapeList.get(i).getPoint(j)[1];
-                angles[j][0] = player.getDegAngleTo(pointX, pointY);
-                angles[j][1] = j;
-            }
-
-            double low = angles[0][0];
-            double high = angles[0][0];
-            int lIndex = 0;
-            int hIndex = 0;
-            for (int j = 1; j < 4; j++) {
-                if (angles[j][0] < low) {
-                    low = angles[j][0];
-                    lIndex = j;
-                }
-                if (angles[j][0] > high) {
-                    high = angles[j][0];
-                    hIndex = j;
-                }
-            }
-            g.drawLine(sourceX, sourceY, shapeList.get(i).getPoint(lIndex)[0], shapeList.get(i).getPoint(lIndex)[1]);
-            g.drawLine(sourceX, sourceY, shapeList.get(i).getPoint(hIndex)[0], shapeList.get(i).getPoint(hIndex)[1]);
-
-            // get circle intercepts
-            // low angle intercept
-            float inter1x = player.getX() + player.getWidth()/2 + (float)Math.sin(Math.toRadians(angles[lIndex][0])) * player.lightCircle.getRadius();
-            float inter1y = player.getY() + player.getHeight()/2 + (float)Math.cos(Math.toRadians(angles[lIndex][0])) * player.lightCircle.getRadius();
-
-            // high angle intercept
-            float inter2x = player.getX() + player.getWidth()/2 + (float)Math.sin(Math.toRadians(angles[hIndex][0])) * player.lightCircle.getRadius();
-            float inter2y = player.getY() + player.getHeight()/2 + (float)Math.cos(Math.toRadians(angles[hIndex][0])) * player.lightCircle.getRadius();
-
-            g.setColor(Color.black);
-            Polygon shadow = new Polygon();
-            shadow.addPoint(inter1x, inter1y);
-            shadow.addPoint(inter2x, inter2y);
-            shadow.addPoint(shapeList.get(i).getPoint(hIndex)[0], shapeList.get(i).getPoint(hIndex)[1]);
-            shadow.addPoint(shapeList.get(i).getPoint(lIndex)[0], shapeList.get(i).getPoint(lIndex)[1]);
-
-            g.draw(shadow);
         }
     }
 

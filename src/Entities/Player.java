@@ -49,9 +49,6 @@ public class Player {
         x = Survivr.V_WIDTH / 2 - 10;
         y = Survivr.V_HEIGHT / 2 - 10;
 
-        // Lighting??
-        lightCircle = new Circle(x + (width / 2), y + (height / 2), 300);
-
         // Create player
         this.username = Survivr.NAME;
         this.walking = false;
@@ -75,10 +72,7 @@ public class Player {
 
     public void render(Graphics g) {
         img.draw(x, y);
-        lightCircle.setCenterX(x + (width / 2));
-        lightCircle.setCenterY(y + (height / 2));
         renderProjectiles(g);
-        g.draw(lightCircle);
     }
 
     private void renderProjectiles(Graphics g){
@@ -137,12 +131,6 @@ public class Player {
         p.y = y;
         if (Survivr.details.connection != null)
             Survivr.details.connection.sendTCP(p);
-    }
-
-    public double getDegAngleTo(int xE, int yE) {
-        int xS = (int) x + (width / 2);
-        int yS = (int) y + (height / 2);
-        return Math.toDegrees(Math.atan2(xE - xS, yE - yS));
     }
 
     public double getDistanceBetween(float startX, float startY, float endX, float endY) {
