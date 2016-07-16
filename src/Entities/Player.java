@@ -18,7 +18,7 @@ public class Player {
     private String username;
 
     private Circle player;
-    private Circle lightCircle;
+    public Circle lightCircle;
 
     private Image img;
 
@@ -50,7 +50,7 @@ public class Player {
         y = Survivr.V_HEIGHT / 2 - 10;
 
         // Lighting??
-        lightCircle = new Circle(x + (width / 2), y + (height / 2), 400);
+        lightCircle = new Circle(x + (width / 2), y + (height / 2), 300);
 
         // Create player
         this.username = Survivr.NAME;

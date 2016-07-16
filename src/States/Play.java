@@ -8,6 +8,7 @@ import Entities.Tile;
 import Network.NetworkPlayer;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -37,6 +38,9 @@ public class Play extends BasicGameState {
     private ArrayList<Tile> scene;
     private Image tile;
 
+    //Shadows
+    private ArrayList<Polygon> shadowList;
+
     private boolean isGridShowing;
 
 
@@ -52,6 +56,7 @@ public class Play extends BasicGameState {
         actionBar = new ActionBar(container);
         player = new Player();
         scene = new ArrayList<>();
+        shadowList = new ArrayList<>();
 
         tile = new Image("res\\game\\tile.png");
 
@@ -118,7 +123,7 @@ public class Play extends BasicGameState {
     private void populateShapes() {
         // create random shapes
         Random rand = new Random();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             shapeList.add(new Rectangle(rand.nextInt(Survivr.V_WIDTH), rand.nextInt(Survivr.V_HEIGHT), 50, 50));
         }
     }
@@ -163,6 +168,24 @@ public class Play extends BasicGameState {
             }
             g.drawLine(sourceX, sourceY, shapeList.get(i).getPoint(lIndex)[0], shapeList.get(i).getPoint(lIndex)[1]);
             g.drawLine(sourceX, sourceY, shapeList.get(i).getPoint(hIndex)[0], shapeList.get(i).getPoint(hIndex)[1]);
+
+            // get circle intercepts
+            // low angle intercept
+            float inter1x = player.getX() + player.getWidth()/2 + (float)Math.sin(Math.toRadians(angles[lIndex][0])) * player.lightCircle.getRadius();
+            float inter1y = player.getY() + player.getHeight()/2 + (float)Math.cos(Math.toRadians(angles[lIndex][0])) * player.lightCircle.getRadius();
+
+            // high angle intercept
+            float inter2x = player.getX() + player.getWidth()/2 + (float)Math.sin(Math.toRadians(angles[hIndex][0])) * player.lightCircle.getRadius();
+            float inter2y = player.getY() + player.getHeight()/2 + (float)Math.cos(Math.toRadians(angles[hIndex][0])) * player.lightCircle.getRadius();
+
+            g.setColor(Color.black);
+            Polygon shadow = new Polygon();
+            shadow.addPoint(inter1x, inter1y);
+            shadow.addPoint(inter2x, inter2y);
+            shadow.addPoint(shapeList.get(i).getPoint(hIndex)[0], shapeList.get(i).getPoint(hIndex)[1]);
+            shadow.addPoint(shapeList.get(i).getPoint(lIndex)[0], shapeList.get(i).getPoint(lIndex)[1]);
+
+            g.draw(shadow);
         }
     }
 
