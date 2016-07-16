@@ -1,35 +1,19 @@
 package States;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
-import Network.NetworkPlayer;
-import Renderer.FBORenderer;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.*;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Point;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
-import org.newdawn.slick.opengl.pbuffer.FBOGraphics;
-import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.StateBasedGame;
-
 import Entities.Player;
 import GUI.ActionBar;
 import GUI.Debug;
 import Game.Survivr;
-import Network.NetworkClient;
+import Entities.Tile;
+import Network.NetworkPlayer;
+import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
-import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class Play extends BasicGameState {
@@ -39,6 +23,7 @@ public class Play extends BasicGameState {
 
     // Colours
     private Color backgroundColour = new Color(20, 112, 162);
+    private Color boxColour = new Color(10, 90, 130);
 
     // GUI
     private Debug debug;
@@ -47,6 +32,12 @@ public class Play extends BasicGameState {
     //Entities
     private Player player;
     private ArrayList<Shape> shapeList = new ArrayList<>();
+
+    //World
+    private ArrayList<Tile> scene;
+    private Image tile;
+
+    private boolean isGridShowing;
 
 
     public Play(int state) {
@@ -60,8 +51,12 @@ public class Play extends BasicGameState {
         debug = new Debug();
         actionBar = new ActionBar(container);
         player = new Player();
+        scene = new ArrayList<>();
+
+        tile = new Image("res\\game\\tile.png");
 
         populateShapes();
+        generateScene();
 
     }
 
@@ -77,12 +72,16 @@ public class Play extends BasicGameState {
 
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+
+
         g.setColor(backgroundColour);
         g.fill(back);
 
         // Lighting rendering
         drawLighting(g);
-        drawShapes(g); // BOXES
+        drawShapes(g);
+
+        renderGrid(g);
 
         // Player rendering
         player.render(g);
@@ -93,12 +92,27 @@ public class Play extends BasicGameState {
         actionBar.render(g, container);
     }
 
+    private void renderGrid(Graphics g){
+        if(isGridShowing){
+            for(Tile t : scene){
+                t.render(g);
+            }
+        }
+    }
+
     private void checkInput(StateBasedGame game){
         if (Survivr.input.isKeyPressed(Input.KEY_F1))
             debug.toggle();
-
         else if (Survivr.input.isKeyPressed(Input.KEY_ESCAPE))
             game.enterState(Survivr.menu);
+        else if(Survivr.input.isKeyPressed(Input.KEY_F5)){
+            if(isGridShowing){
+                isGridShowing = false;
+            }else{
+                isGridShowing = true;
+            }
+        }
+
     }
 
     private void populateShapes() {
@@ -109,6 +123,14 @@ public class Play extends BasicGameState {
         }
     }
 
+    private void generateScene(){
+        for (int x = 0; x < Survivr.V_WIDTH; x+=64){
+            for(int y = 0; y < Survivr.V_HEIGHT; y+=64){
+                scene.add(new Tile(x ,y, tile));
+            }
+
+        }
+    }
 
     private void drawLighting(Graphics g) {
         int sourceX = (int) player.getX() + player.getWidth() / 2;
@@ -162,8 +184,9 @@ public class Play extends BasicGameState {
 
     private void drawShapes(Graphics g) {
         for (int i = 0; i < shapeList.size(); i++) {
-            g.setColor(new Color(10, 90, 130));
+            g.setColor(boxColour);
             g.setAntiAlias(true);
+            shapeList.get(i).setLocation(shapeList.get(i).getX() + Survivr.screen.offsetX, shapeList.get(i).getY()+Survivr.screen.offsetY);
             g.fill(shapeList.get(i));
         }
     }

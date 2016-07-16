@@ -29,22 +29,24 @@ public class Survivr extends StateBasedGame {
     // Game settings
     private static boolean FULLSCREEN = false;
     private static int FPS = 60;
-    private static boolean VSYNC = true;
+    public static boolean VSYNC = false;
 
     // Game states
     public static int menu = 0;
     public static int play = 1;
     public static int splash = 2;
+    public static int options = 3;
 
     // Player settings
     public static String NAME;
 
 
-    public Survivr(String name) {
+    public Survivr(String name) throws SlickException {
         super(name);
         this.addState(new States.Menu(menu));
         this.addState(new States.Play(play));
         this.addState(new States.Splash(splash));
+        this.addState(new States.Options(options));
     }
 
     @Override
@@ -52,6 +54,7 @@ public class Survivr extends StateBasedGame {
         input = container.getInput();
         //this.getState(menu).init(container, this);
         this.getState(splash).init(container, this);
+        //this.getState(options).init(container, this);
         //this.getState(play).init(container, this);
 
         this.enterState(splash);
@@ -69,7 +72,7 @@ public class Survivr extends StateBasedGame {
             //app.setTargetFrameRate(FPS);
             app.setAlwaysRender(true);
             app.setShowFPS(false);
-            //app.setVSync(VSYNC);
+            app.setVSync(VSYNC);
             app.start();
         } catch (SlickException e) {
 

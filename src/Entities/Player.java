@@ -28,6 +28,7 @@ public class Player {
     private float targetAng;
     private Vector2f direction;
     private float speed;
+    private float maxSpeed;
     private boolean walking;
 
 
@@ -50,8 +51,8 @@ public class Player {
         // Create player
         this.username = Survivr.NAME;
         this.walking = false;
+        this.maxSpeed = 0.2f;
         player = new Circle(x, y, width, height);
-
 
         // Load input
         input = Survivr.app.getInput();
@@ -62,6 +63,7 @@ public class Player {
         setWalkingDirection(delta);
         checkForWalking();
         walk();
+
         updateServer();
     }
 
@@ -74,8 +76,10 @@ public class Player {
 
     private void walk() {
         if (walking) {
+
             x += speed * Math.cos(Math.toRadians(direction.getTheta()));
             y += speed * Math.sin(Math.toRadians(direction.getTheta()));
+
 
             player.setLocation(x, y);
         }
@@ -97,14 +101,13 @@ public class Player {
     private void setWalkingDirection(int delta) {
         direction = new Vector2f(input.getMouseX() - x - width / 2, input.getMouseY() - y - height / 2);
         direction.getTheta();
-        speed = 0.1f * delta;
+        speed = maxSpeed * delta;
     }
 
     private void updateServer() {
         Packet04ClientUpdate p = new Packet04ClientUpdate();
         p.x = x;
         p.y = y;
-
         if (Survivr.details.connection != null)
             Survivr.details.connection.sendTCP(p);
     }

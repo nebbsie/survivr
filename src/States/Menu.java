@@ -76,7 +76,7 @@ public class Menu extends BasicGameState {
 
         //sound.play();
 
-        connect();
+       // connect();
 
 
         crab = new Image("res\\menu\\crab.png");
@@ -165,6 +165,10 @@ public class Menu extends BasicGameState {
 
         if (quitButton.isMouseOver() && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
             container.exit();
+        }
+
+        if (optionsButton.isMouseOver() && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+            game.enterState(Survivr.options);
         }
 
 

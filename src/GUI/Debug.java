@@ -4,10 +4,13 @@ import java.awt.Font;
 import java.net.InetSocketAddress;
 
 import Entities.Player;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 
 import Game.Survivr;
 import Network.NetworkDetails;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Debug {
 
@@ -18,11 +21,16 @@ public class Debug {
 	private int ping;
 	private InetSocketAddress address;
 	private Player p;
+	private Rectangle area;
+	private int width = 400;
+	private int height= 200;
+	private boolean isCameraAreaShowing;
 
 	private boolean isDebug;
 
 	public Debug() {
 		this.isDebug = true;
+		area = new Rectangle((Survivr.V_WIDTH / 2) - width/2, ((Survivr.V_HEIGHT) - height*2) - height/2, width, height);
 	}
 
 	public void toggle() {
@@ -38,6 +46,14 @@ public class Debug {
 		ping = Survivr.details.ping;
 		address = Survivr.details.address;
 		this.p = p;
+
+		if(Survivr.input.isKeyPressed(Input.KEY_F6)){
+			if(isCameraAreaShowing){
+				isCameraAreaShowing = false;
+			}else{
+				isCameraAreaShowing = true;
+			}
+		}
 	}
 
 	public void render() {
@@ -53,6 +69,14 @@ public class Debug {
 			font.drawString(Survivr.V_WIDTH - 120, 0, "!DEBUG MODE!");
 			font.drawString(0, 105, "X: " + p.getX() + "Y: " + p.getY());
 			font.drawString(0, 120, "Username: " + p.getUsername());
+
+			if(isCameraAreaShowing){
+				Survivr.app.getGraphics().setColor(Color.red);
+				Survivr.app.getGraphics().draw(area);
+			}
+
+
+
 		}
 
 	}
