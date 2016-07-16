@@ -59,7 +59,7 @@ public class Play extends BasicGameState {
 
         tile = new Image("res\\game\\tile.png");
 
-        populateShapes();
+        populateShapes(5);
         generateScene();
 
     }
@@ -124,10 +124,10 @@ public class Play extends BasicGameState {
         }
     }
 
-    private void populateShapes() {
+    private void populateShapes(int count) {
         // create random shapes
         Random rand = new Random();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < count; i++) {
             shapeList.add(new Rectangle(rand.nextInt(Survivr.V_WIDTH), rand.nextInt(Survivr.V_HEIGHT), 50, 50));
         }
     }
