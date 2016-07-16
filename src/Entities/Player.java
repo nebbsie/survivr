@@ -9,144 +9,159 @@ import Game.Survivr;
 
 public class Player {
 
-	private Input input;
-	private String username;
-	private Circle player;
-	private Image img;
+    private Input input;
 
-	private float x;
-	private float y;
-	private float dx = 0;
-	private float dy = 0;
+    private String username;
 
-	private float speed = 0.2f;
+    private Circle player;
+    private Circle lightCircle;
 
-	private int width = 40;
-	private int height = 40;
+    private Image img;
 
-	private float targetAng;
-	private int tx;
-	private int ty;
+    private float x;
+    private float y;
 
-	private Circle lightCircle;
+    private int width = 40;
+    private int height = 40;
 
-	public Player(GameContainer container, String username){
-		this.username = username;
-		x = Survivr.V_WIDTH/2-10;
-		y = Survivr.V_HEIGHT/2-10;
+    // Movement and angle
+    private float targetAng;
+    private Vector2f direction;
+    private float speed;
+    private boolean walking;
 
-		lightCircle = new Circle(x + (width/2), y + (height/2), 400);
 
-		try {
-			img  = new Image("res\\game\\player.png");
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
-		player = new Circle(x, y, width, height);
+    public Player() {
 
-		input = container.getInput();
-	}
+        // Load player texture
+        try {
+            img = new Image("res\\game\\player.png");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
 
-	public void update(int delta){
-		//checkInput();
+        // Setup player position
+        x = Survivr.V_WIDTH / 2 - 10;
+        y = Survivr.V_HEIGHT / 2 - 10;
 
-		targetAng = (float) getTargetAngle(x, y, input.getMouseX(), input.getMouseY());
-		tx = (img.getWidth() / 2);
-		ty = (img.getHeight() / 2);
-		img.setRotation(targetAng);
+        // Lighting??
+        lightCircle = new Circle(x + (width / 2), y + (height / 2), 400);
 
-		Vector2f direction = new Vector2f(input.getMouseX()  - x, input.getMouseY()  - y);
-		direction.getTheta();
+        // Create player
+        this.username = Survivr.NAME;
+        this.walking = false;
+        player = new Circle(x, y, width, height);
 
-		speed = 0.1f * delta;
 
-		if(input.isKeyDown(Input.KEY_W)){
-			x += speed * Math.cos(Math.toRadians(direction.getTheta()));
-			y += speed * Math.sin(Math.toRadians(direction.getTheta()));
-		}
+        // Load input
+        input = Survivr.app.getInput();
+    }
 
-		player.setLocation(x, y);
+    public void update(int delta) {
+        setPointingAngle();
+        setWalkingDirection(delta);
+        checkForWalking();
+        walk();
+        updateServer();
+    }
 
-		updateServer();
-		reset();
-	}
-	
-	public void render(Graphics g){
-		img.draw(x, y);
-		lightCircle.setCenterX(x + (width/2));
-		lightCircle.setCenterY(y + (height/2));
-		g.draw(lightCircle);
-	}
+    public void render(Graphics g) {
+        img.draw(x, y);
+        lightCircle.setCenterX(x + (width / 2));
+        lightCircle.setCenterY(y + (height / 2));
+        g.draw(lightCircle);
+    }
 
-	public void checkInput(){
-		if(input.isKeyDown(Input.KEY_W))
-			dy -= speed;
-		else if(input.isKeyDown(Input.KEY_S))
-			dy += speed;
+    private void walk() {
+        if (walking) {
+            x += speed * Math.cos(Math.toRadians(direction.getTheta()));
+            y += speed * Math.sin(Math.toRadians(direction.getTheta()));
 
-		if(input.isKeyDown(Input.KEY_A))
-			dx -= speed;
-		else if(input.isKeyDown(Input.KEY_D))
-			dx += speed;
-	}
+            player.setLocation(x, y);
+        }
+    }
 
-	private void updateServer(){
-		Packet04ClientUpdate p = new Packet04ClientUpdate();
-		p.x = x;
-		p.y = y;
+    private void checkForWalking() {
+        if (input.isKeyDown(Input.KEY_W)) {
+            walking = true;
+        } else {
+            walking = false;
+        }
+    }
 
-		if(Survivr.details.connection != null)
-			Survivr.details.connection.sendTCP(p);
-	}
+    private void setPointingAngle() {
+        targetAng = (float) getTargetAngle(x, y, input.getMouseX(), input.getMouseY());
+        img.setRotation(targetAng);
+    }
 
-	private void reset(){
-		dx = 0;
-		dy = 0;
-	}
+    private void setWalkingDirection(int delta) {
+        direction = new Vector2f(input.getMouseX() - x - width / 2, input.getMouseY() - y - height / 2);
+        direction.getTheta();
+        speed = 0.1f * delta;
+    }
 
-	public double getDegAngleTo(int xE, int yE){
-		int xS = (int)x + (width / 2);
-		int yS = (int)y + (height / 2);
-		return Math.toDegrees(Math.atan2(xE - xS, yE - yS));
-	}
+    private void updateServer() {
+        Packet04ClientUpdate p = new Packet04ClientUpdate();
+        p.x = x;
+        p.y = y;
 
-	public double getDistanceBetween(float startX, float startY, float endX, float endY) {
-		return Math.sqrt((Math.pow((endX - startX), 2)) + (Math.pow((endY - startY), 2)));
-	}
+        if (Survivr.details.connection != null)
+            Survivr.details.connection.sendTCP(p);
+    }
 
-	public double getTargetAngle(float startX, float startY, float targetX, float targetY) {
-		double dist = getDistanceBetween(startX, startY, targetX, targetY);
-		double sinNewAng = (startY - targetY) / dist;
-		double cosNewAng = (targetX - startX) / dist;
-		double angle = 0;
+    public double getDegAngleTo(int xE, int yE) {
+        int xS = (int) x + (width / 2);
+        int yS = (int) y + (height / 2);
+        return Math.toDegrees(Math.atan2(xE - xS, yE - yS));
+    }
 
-		if (sinNewAng > 0) {
-			if (cosNewAng > 0) {
-				angle = 90 - Math.toDegrees(Math.asin(sinNewAng));
-			} else {
-				angle = Math.toDegrees(Math.asin(sinNewAng)) + 270;
-			}
-		} else {
-			angle = Math.toDegrees(Math.acos(cosNewAng)) + 90;
-		}
-		return angle;
-	}
+    public double getDistanceBetween(float startX, float startY, float endX, float endY) {
+        return Math.sqrt((Math.pow((endX - startX), 2)) + (Math.pow((endY - startY), 2)));
+    }
 
-	public float getX(){return x;}
-	public float getY(){return y;}
-	public int getWidth() {
-		return width;
-	}
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	public int getHeight() {
-		return height;
-	}
-	public void setHeight(int height) {
-		this.height = height;
-	}
-	public String getUsername() {
-		return username;
-	}
+    public double getTargetAngle(float startX, float startY, float targetX, float targetY) {
+        double dist = getDistanceBetween(startX, startY, targetX, targetY);
+        double sinNewAng = (startY - targetY) / dist;
+        double cosNewAng = (targetX - startX) / dist;
+        double angle = 0;
+
+        if (sinNewAng > 0) {
+            if (cosNewAng > 0) {
+                angle = 90 - Math.toDegrees(Math.asin(sinNewAng));
+            } else {
+                angle = Math.toDegrees(Math.asin(sinNewAng)) + 270;
+            }
+        } else {
+            angle = Math.toDegrees(Math.acos(cosNewAng)) + 90;
+        }
+        return angle;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String getUsername() {
+        return username;
+    }
 }

@@ -1,7 +1,7 @@
 package Game;
 
 public class Screen {
-    public static int offestX;
-    public static int offsetY;
+    public static float offestX = 0;
+    public static float offsetY = 0;
 
 }
