@@ -68,11 +68,7 @@ public class Play extends BasicGameState {
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 
-        if (Survivr.input.isKeyPressed(Input.KEY_F1))
-            debug.toggle();
-
-        else if (Survivr.input.isKeyPressed(Input.KEY_ESCAPE))
-            game.enterState(Survivr.menu);
+        checkInput(game);
 
         debug.update(player);
         actionBar.update(delta);
@@ -95,6 +91,14 @@ public class Play extends BasicGameState {
         //GUI rendering
         debug.render();
         actionBar.render(g, container);
+    }
+
+    private void checkInput(StateBasedGame game){
+        if (Survivr.input.isKeyPressed(Input.KEY_F1))
+            debug.toggle();
+
+        else if (Survivr.input.isKeyPressed(Input.KEY_ESCAPE))
+            game.enterState(Survivr.menu);
     }
 
     private void populateShapes() {
