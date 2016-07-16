@@ -28,10 +28,14 @@ public class Player {
 	private int tx;
 	private int ty;
 
+	private Circle lightCircle;
+
 	public Player(GameContainer container, String username){
 		this.username = username;
 		x = Survivr.V_WIDTH/2-10;
 		y = Survivr.V_HEIGHT/2-10;
+
+		lightCircle = new Circle(x + (width/2), y + (height/2), 400);
 
 		try {
 			img  = new Image("res\\game\\player.png");
@@ -69,6 +73,9 @@ public class Player {
 	
 	public void render(Graphics g){
 		img.draw(x, y);
+		lightCircle.setCenterX(x + (width/2));
+		lightCircle.setCenterY(y + (height/2));
+		g.draw(lightCircle);
 	}
 
 	public void checkInput(){

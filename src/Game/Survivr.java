@@ -63,10 +63,10 @@ public class Survivr extends StateBasedGame {
 				FULLSCREEN = true;
 			}
 			app.setDisplayMode(WIDTH * SCALE, HEIGHT * SCALE, FULLSCREEN);
-			app.setTargetFrameRate(FPS);
+			//app.setTargetFrameRate(FPS);
 			app.setAlwaysRender(true);
 			app.setShowFPS(false);
-			app.setVSync(VSYNC);
+			//app.setVSync(VSYNC);
 			app.start();
 		} catch (SlickException e) {
 
