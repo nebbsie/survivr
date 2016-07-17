@@ -7,6 +7,7 @@ import Game.Survivr;
 import Entities.Tile;
 import Network.NetworkPlayer;
 import Renderer.LightSource;
+import Renderer.shader.Shader;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Polygon;
@@ -15,6 +16,8 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -22,6 +25,8 @@ public class Play extends BasicGameState {
 
     private int state;
     private Rectangle back;
+    private Rectangle rect;
+
 
     // Colours
     private Color backgroundColour = new Color(100, 150, 180);
@@ -42,7 +47,11 @@ public class Play extends BasicGameState {
     private ArrayList<LightSource> worldLights;
     private Shape alpha;
 
+    private Shader wave;
+    private Image img;
+
     private boolean isGridShowing;
+    private float shift = 1.0f;
 
     public Play(int state) {
         this.state = state;
@@ -60,6 +69,9 @@ public class Play extends BasicGameState {
         worldLights.add(new LightSource(0, 0, 400));
         alpha = new Rectangle(0, 0, Survivr.V_WIDTH / 2, Survivr.V_HEIGHT);
 
+        wave = Shader.makeShader("data/basic.vrt", "data/basic.frg");
+        rect = new Rectangle(400, 400, 400, 400);
+
         tile = new Image("res\\game\\tile.png");
 
         populateShapes(5);
@@ -75,6 +87,7 @@ public class Play extends BasicGameState {
         player.update(delta);
         // temporary! move the world light with the player
         worldLights.get(0).update((int)player.getX() + (player.getWidth() / 2), (int)player.getY() + (player.getHeight() / 2));
+        shift += delta/150.0f;
     }
 
     @Override
@@ -83,10 +96,12 @@ public class Play extends BasicGameState {
         g.fill(back);
 
         // Lighting rendering
+       //
+
+        renderGrid(g);
         drawLighting(g);
         drawShapes(g);
 
-        renderGrid(g);
 
         // Player rendering
         player.render(g);
@@ -95,6 +110,12 @@ public class Play extends BasicGameState {
         //GUI rendering
         debug.render();
         actionBar.render(g, container);
+
+        wave.startShader();
+        g.fill(rect);
+
+        Shader.forceFixedShader();
+
     }
 
     private void drawLighting(Graphics g) {
