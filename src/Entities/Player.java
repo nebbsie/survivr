@@ -1,5 +1,5 @@
 package Entities;
-
+//
 import Network.Packets.Packet04ClientUpdate;
 import com.esotericsoftware.kryonet.Connection;
 import org.newdawn.slick.*;
